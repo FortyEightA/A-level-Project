@@ -5,8 +5,8 @@ from pyglet import clock
 
 # initialise the background and player_image as soon as the window is drawn
 resx, resy = 860, 540
-backgroundimage = pyglet.image.load('whitebackground.jpg')
-player_image = pyglet.image.load('testsprite.png',)
+backgroundimage = pyglet.image.load('images/whitebackground.jpg')
+player_image = pyglet.image.load('images/testsprite.png',)
 player_image.anchor_x = player_image.width//2
 player_image.anchor_y = player_image.height//2
 player = pyglet.sprite.Sprite(player_image, x=resx//2, y=resy//2)

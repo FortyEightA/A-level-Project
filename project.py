@@ -1,4 +1,5 @@
-from os import wait
+
+
 import pyglet
 from pyglet.window import key
 from pyglet import clock
@@ -19,10 +20,25 @@ player_image.anchor_y = player_image.height//2
 player = pyglet.sprite.Sprite(player_image, x=resx//2, y=resy//2)
 
 # create boolean variables for the buttons to allow repeat actions
-w, a, s, d, space = False, False, False, False, False
-
+w, a, s, d = False, False, False, False
+space = False
 # player speed
 max_speed = 7
+
+
+def check_bounds(self):
+    min_x = -self.image.width / 2
+    min_y = -self.image.height / 2
+    max_x = 900 + self.image.width / 2
+    max_y = 600 + self.image.height / 2
+    if self.x < min_x:
+        self.x = max_x
+    elif self.x > max_x:
+        self.x = min_x
+    if self.y < min_y:
+        self.y = max_y
+    elif self.y > max_y:
+        self.y = min_y
 
 
 class main(pyglet.window.Window):
@@ -42,24 +58,28 @@ class main(pyglet.window.Window):
             self.close()
 
         # initialise global variables into local scope
-        global w, a, s, d
+        global w, a, s, d, space
 
         # look for key press
         if symbol == key.W:
             w = True
+            player.rotation = 0
         elif symbol == key.A:
             a = True
+            player.rotation = 270
         elif symbol == key.S:
             s = True
+            player.rotation = 180
         elif symbol == key.D:
             d = True
+            player.rotation = 90
         elif symbol == key.SPACE:
             space = True
 
     def on_key_release(self, symbol, modifiers):
 
         # initialise global variables into local scope
-        global w, a, s, d
+        global w, a, s, d, space
 
         # look for key release
         if symbol == key.W:
@@ -74,7 +94,33 @@ class main(pyglet.window.Window):
             space = False
 
     def update(dt):
-        global velX, velY, acceleration, friction
+        global velX, velY, acceleration, friction, space, w, a, s, d
+        if space == True:
+
+            if w == True:
+                if a == True:
+                    velX -= 3.5355
+                    velY += 3.5355
+                elif d == True:
+                    velX += 3.5355
+                    velY += 3.5355
+                else:
+                    velY += 5
+            elif s == True:
+                if a == True:
+                    velX -= 3.5355
+                    velY -= 3.5355
+                elif d == True:
+                    velX += 3.5355
+                    velY -= 3.5355
+                else:
+                    velY -= 5
+            elif a == True:
+                velX -= 5
+
+            elif d == True:
+                velX += 5
+
         if a == True:
             if velX > -max_speed:
                 velX -= acceleration
@@ -87,33 +133,11 @@ class main(pyglet.window.Window):
         if s == True:
             if velY < max_speed:
                 velY -= acceleration
-        # if space == True:
-        #     if w == True:
-        #         if a == True:
-        #             velX -= 3.5355
-        #             velY += 3.5355
-        #         elif d == True:
-        #             velX += 3.5355
-        #             velY += 3.5355
-        #         else:
-        #             velY += 5
-        #     elif s == True:
-        #         if a == True:
-        #             velX -= 3.5355
-        #             velY -= 3.5355
-        #         elif d == True:
-        #             velX += 3.5355
-        #             velY -= 3.5355
-        #         else:
-        #             velY -= 5
-        #     elif a == True:
-        #         velX -= 5
-        #     elif d == True:
-        #         velX += 5
         player.x += velX
         player.y += velY
         velX *= friction
         velY *= friction
+        check_bounds(player)
 
     # function to move the player sprite
 

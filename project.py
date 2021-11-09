@@ -29,8 +29,8 @@ max_speed = 7
 def check_bounds(self):
     min_x = -self.image.width / 2
     min_y = -self.image.height / 2
-    max_x = 900 + self.image.width / 2
-    max_y = 600 + self.image.height / 2
+    max_x = resx + self.image.width / 2
+    max_y = resy + self.image.height / 2
     if self.x < min_x:
         self.x = max_x
     elif self.x > max_x:

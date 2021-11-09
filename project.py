@@ -1,5 +1,3 @@
-
-
 import pyglet
 from pyglet.window import key
 from pyglet import clock
